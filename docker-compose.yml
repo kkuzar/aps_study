@@ -1,0 +1,58 @@
+version: '3.8'
+services:
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ../mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - chat-network
+    # command: ["mongosh","--file" ,"mongo-init.js"]
+
+  redis:
+    image: redis:alpine
+    container_name: chat-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - chat-network
+
+  backend:
+    build: .
+    container_name: backend
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production # Set to production for the container
+      - PORT=4000
+      - MONGO_URI=mongodb://mongodb:mongodb@mongo:27017/chat # Use service name 'mongo'
+      - REDIS_HOST=redis # Use service name 'redis'
+      - REDIS_PORT=6379
+      - SOCKET_ADAPTER=redis # Ensure Redis adapter is used in compose
+      # - REDIS_PASSWORD=your_redis_password # Uncomment if needed
+      # - PUSHER_APP_ID=... # Add Pusher vars if using
+      # - PUSHER_KEY=...
+      # - PUSHER_SECRET=...
+      # - PUSHER_CLUSTER=...
+    volumes:
+      - /app/node_modules
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - chat-network
+    command: ["npm", "start"]
+
+networks:
+  chat-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+  redis-data:

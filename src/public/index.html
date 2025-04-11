@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APS RVT to IFC Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Include Socket.IO client library -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<h1>Revit (RVT) to IFC Converter</h1>
+<div class="container">
+    <form id="uploadForm">
+        <label for="rvtFile">Select RVT File:</label>
+        <input type="file" id="rvtFile" name="rvtFile" accept=".rvt" required>
+        <button type="submit" id="uploadButton">Upload & Convert</button>
+    </form>
+
+    <div id="statusArea">
+        <h2>Status</h2>
+        <div id="statusMessage">Waiting for file upload...</div>
+        <div class="progress-container">
+            <div id="progressBar" style="width: 0%;"></div>
+        </div>
+        <div id="progressText">0%</div>
+    </div>
+
+    <div id="downloadArea" style="display: none;">
+        <h2>Download</h2>
+        <button id="downloadButton">Download IFC File</button>
+        <span id="downloadUrn" style="display: none;"></span> <!-- Hidden span to store URN -->
+    </div>
+
+    <div id="errorArea" style="display: none; color: red; margin-top: 15px;">
+        <h2>Error</h2>
+        <p id="errorMessage"></p>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
