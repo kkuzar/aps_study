@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APS RVT to IFC</title>
+    <!-- Autodesk Viewer CSS -->
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css" type="text/css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>APS RVT to IFC Transformation & Preview</h1>
+<h6>kuzar@kuzar.fi</h6>
+<div class="section">
+    <h2>1. Upload RVT File</h2>
+    <input type="file" id="rvtFile" accept=".rvt">
+    <button id="uploadButton">Upload & Start Process</button>
+    <p id="uploadStatus"></p>
+    <p>Uploaded URN: <code id="urnDisplay">N/A</code></p>
+</div>
+
+<div class="section">
+    <h2>2. Translation Status</h2>
+    <p id="translationStatus">Status: Idle</p>
+    <p id="translationProgress">Progress: 0%</p>
+    <button id="downloadIfcButton" disabled>Download IFC</button>
+</div>
+
+<div class="section">
+    <h2>3. Preview RVT</h2>
+    <button id="loadViewerButton" disabled>Load Viewer</button>
+    <div id="apsViewer"></div>
+</div>
+
+<!-- Autodesk Viewer JavaScript -->
+<script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
+<!-- Socket.IO Client -->
+<script src="/socket.io/socket.io.js"></script>
+<!-- Your custom script -->
+<script src="main.js"></script>
+</body>
+</html>
