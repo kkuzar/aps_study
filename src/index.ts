@@ -1,6 +1,7 @@
 import {httpServer, initServer} from "./app";
 import { config } from './config'
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
+import {cleanupSocketPolls} from "./handlers/socketHandler";
 
 const startServer = async () => {
     try {
@@ -27,15 +28,16 @@ const signals = ['SIGINT', 'SIGTERM', 'SIGQUIT'];
 signals.forEach(signal => {
     process.on(signal, () => {
         console.log(`\nReceived ${signal}. Shutting down gracefully...`);
+        // cleanupSocketPolls()
         httpServer.close(() => {
             console.log('HTTP server closed.');
-            mongoose.connection.close(false).then(() => {
-                console.log('MongoDB connection closed.');
-                process.exit(0);
-            }).catch(err => {
-                console.error('Error closing MongoDB connection:', err);
-                process.exit(1);
-            });
+            // mongoose.connection.close(false).then(() => {
+            //     console.log('MongoDB connection closed.');
+            //     process.exit(0);
+            // }).catch(err => {
+            //     console.error('Error closing MongoDB connection:', err);
+            //     process.exit(1);
+            // });
             // Close Redis clients if they were created and connected
             // (The redis adapter might handle this, but explicit closing is safer)
             // Example: pubClient.quit(); subClient.quit();

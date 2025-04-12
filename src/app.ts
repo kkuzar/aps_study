@@ -3,7 +3,8 @@ import http from 'http';
 import {Server} from 'socket.io';
 import path from 'path';
 import {registerSocketHandlers} from "./handlers/socketHandler";
-import {getInternalToken} from "./service/aps";
+import {getInternalToken} from "./services/aps";
+import router from "./routes/aps.routes";
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -35,16 +36,12 @@ const initServer = async () => {
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.use('/api', router);
 app.use(express.static(path.join(__dirname, './', 'public')));
-
-app.get('/api/auth/token', async function (req, res, next) {
-    try {
-        // res.json(await getViewerToken());
-        res.json(await getInternalToken());
-    } catch (err) {
-        next(err);
-    }
-});
+app.get('/favicon.ico', (req: Request, res: Response) => {
+    res.status(204).end()
+    return
+})
 
 
 app.get('/health', (req: Request, res: Response) => {

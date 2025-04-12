@@ -1,36 +1,36 @@
 version: '3.8'
 services:
 
-  mongo:
-    image: mongo:latest
-    container_name: mongo-db
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-      - ../mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    networks:
-      - chat-network
-    # command: ["mongosh","--file" ,"mongo-init.js"]
-
-  redis:
-    image: redis:alpine
-    container_name: chat-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    networks:
-      - chat-network
+#  mongo:
+#    image: mongo:latest
+#    container_name: mongo-db
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - mongo-data:/data/db
+#      - ../mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+#    networks:
+#      - chat-network
+#    # command: ["mongosh","--file" ,"mongo-init.js"]
+#
+#  redis:
+#    image: redis:alpine
+#    container_name: chat-redis
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - redis-data:/data
+#    networks:
+#      - chat-network
 
   backend:
     build: .
     container_name: backend
     ports:
-      - "4000:4000"
+      - "3000:3000"
     environment:
       - NODE_ENV=production # Set to production for the container
-      - PORT=4000
+      - PORT=3000
       - MONGO_URI=mongodb://mongodb:mongodb@mongo:27017/chat # Use service name 'mongo'
       - REDIS_HOST=redis # Use service name 'redis'
       - REDIS_PORT=6379
@@ -42,9 +42,6 @@ services:
       # - PUSHER_CLUSTER=...
     volumes:
       - /app/node_modules
-    depends_on:
-      - mongo
-      - redis
     networks:
       - chat-network
     command: ["npm", "start"]
